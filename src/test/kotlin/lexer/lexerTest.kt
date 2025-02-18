@@ -4,6 +4,7 @@ import Jay_lexer
 import org.antlr.v4.runtime.CharStreams
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+
 // assertEquals(Jay_lexer.,tokens[].type)
 class LexerTest {
     private fun tokenize(input: String) = Jay_lexer(CharStreams.fromString(input)).allTokens
@@ -70,11 +71,11 @@ class LexerTest {
     @Test
     fun `test number`(){ // Passed
         val tokens = tokenize("""
-            12312 -10923 0.1 -1.2 .2 0xa3e -10E20 -2.3E-10
+            12312 -10923 0.1 -1.2 .2 0xa3e -10E20 -2.3E-10 10.3E-2
         """.trimIndent())
 
         try{
-            assertEquals(8, tokens.size)
+            assertEquals(9, tokens.size)
             assertEquals(Jay_lexer.NUMBER,tokens[0].type)
             assertEquals(Jay_lexer.NUMBER,tokens[1].type)
             assertEquals(Jay_lexer.NUMBER,tokens[2].type)
@@ -83,6 +84,7 @@ class LexerTest {
             assertEquals(Jay_lexer.NUMBER,tokens[5].type)
             assertEquals(Jay_lexer.NUMBER,tokens[6].type)
             assertEquals(Jay_lexer.NUMBER,tokens[7].type)
+            assertEquals(Jay_lexer.NUMBER, tokens[8].type)
         } catch(e: AssertionError){
             println("Error in test number:")
             tokens.forEachIndexed { index, token ->

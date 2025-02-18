@@ -3,17 +3,10 @@ package core
 
 import kotlin.reflect.KFunction
 
-/*
-* Done so far:
-* So I can only have a single variable for parameters for each function I add to procedures
-* My add procedures function works
-* My remove procedures function works
-* My execute function works
-*
-* Left to do:
-* add flags to be able to handle easy toggling on and off of functions, based on index, name, return type, input type.
-* Add checks to ensure safe handling of functions that have a return type that does not match the input type of the next function -> In fact allow them to skip and keep skipping until valid function is found
-* */
+// Figure out how to define ambigious type
+// Finish, so I can implement into convert
+// So turns out, I cant use varargs for function parameter definitions, so I will have to settle with a single variable
+
 
 class Procedure
 {
@@ -47,3 +40,31 @@ class Procedure
         procedures.removeAll { it.name == input }
     }
 }
+
+
+var myProcedure = Procedure()
+fun add10(x:Int): Int {
+    return x+10
+}
+
+fun add20(x:Int): Int {
+    return x+20
+}
+
+fun printVal(x: Int): Int {
+    print("We start with a value of: " + x + "\n")
+    return x
+}
+
+fun endVal(x: Int) : String {
+    return "We end with a value of: $x \n"
+}
+
+myProcedure.addProcedure<Int, Int> (::printVal)
+myProcedure.addProcedure<Int, Int> (::add10)
+myProcedure.addProcedure<Int,Int> (::add20)
+myProcedure.removeProcedure("add20")
+myProcedure.addProcedure<Int, String>(::endVal)
+
+
+myProcedure.execute(1)
